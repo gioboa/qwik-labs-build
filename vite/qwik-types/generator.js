@@ -1,17 +1,17 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
 exports.generateRouteTypes = void 0;
-const promises_1 = require("node:fs/promises");
-const node_path_1 = require("node:path");
-const prettify_1 = require("./prettify");
+const promises_1 = require('node:fs/promises');
+const node_path_1 = require('node:path');
+const prettify_1 = require('./prettify');
 async function generateRouteTypes(srcDir, routesDir, routes) {
-    // console.log(routes);
-    await generateSrcRoutesConfig(srcDir);
-    await generateSrcRoutesGen(srcDir, routes);
+  // console.log(routes);
+  await generateSrcRoutesConfig(srcDir);
+  await generateSrcRoutesGen(srcDir, routes);
 }
 exports.generateRouteTypes = generateRouteTypes;
 async function generateSrcRoutesConfig(srcDir) {
-    const CONFIG_FILE = await (0, prettify_1.prettify) `
+  const CONFIG_FILE = await (0, prettify_1.prettify)`
 /**
  * This file is created as part of the typed routes, but it is intended to be modified by the developer.
  *
@@ -46,23 +46,24 @@ export function AppLink(props: AppLinkProps & QwikIntrinsicElements['a']) {
   );
 }
 `;
-    const file = (0, node_path_1.join)(srcDir, 'routes.config.tsx');
-    const fileExists = await exists(file);
-    console.log('File exists', file, fileExists);
-    if (!fileExists) {
-        (0, promises_1.writeFile)(file, CONFIG_FILE);
-    }
+  const file = (0, node_path_1.join)(srcDir, 'routes.config.tsx');
+  const fileExists = await exists(file);
+  console.log('File exists', file, fileExists);
+  if (!fileExists) {
+    (0, promises_1.writeFile)(file, CONFIG_FILE);
+  }
 }
 async function exists(file) {
-    try {
-        return (await (0, promises_1.stat)(file)).isFile();
-    }
-    catch (e) {
-        return false;
-    }
+  try {
+    return (await (0, promises_1.stat)(file)).isFile();
+  } catch (e) {
+    return false;
+  }
 }
 async function generateSrcRoutesGen(srcDir, routes) {
-    await (0, promises_1.writeFile)((0, node_path_1.join)(srcDir, 'routes.gen.d.ts'), await (0, prettify_1.prettify) `
+  await (0, promises_1.writeFile)(
+    (0, node_path_1.join)(srcDir, 'routes.gen.d.ts'),
+    await (0, prettify_1.prettify)`
 ${GENERATED_HEADER}
 
 export type AppRoutes = ${routes.map((r) => s(r)).join('|')};
@@ -76,28 +77,34 @@ export interface AppRouteParamsFunction {
 }
 
 export type AppLinkProps = ${routes
-        .map((route) => `{ route: ${s(route)}, ${toParams(route)
-        .map((param) => s('param:' + param) + ': string')
-        .join(';')}}`)
-        .join('|')}
-`);
+      .map(
+        (route) =>
+          `{ route: ${s(route)}, ${toParams(route)
+            .map((param) => s('param:' + param) + ': string')
+            .join(';')}}`
+      )
+      .join('|')}
+`
+  );
 }
 function toParams(route) {
-    const params = [];
-    const parts = route.split('/');
-    parts.forEach((part) => {
-        if (part.startsWith('[') && part.endsWith(']')) {
-            params.push(part.substring(part.startsWith('...') ? 4 : 1, part.length - 1));
-        }
-    });
-    return params;
+  const params = [];
+  const parts = route.split('/');
+  parts.forEach((part) => {
+    if (part.startsWith('[') && part.endsWith(']')) {
+      params.push(part.substring(part.startsWith('...') ? 4 : 1, part.length - 1));
+    }
+  });
+  return params;
 }
 function toInterface(paramName, route) {
-    const params = toParams(route);
-    return ((paramName ? paramName + (params.length ? ':' : '?:') : '') +
-        '{' +
-        params.map((param) => param + ': string').join(';') +
-        '}');
+  const params = toParams(route);
+  return (
+    (paramName ? paramName + (params.length ? ':' : '?:') : '') +
+    '{' +
+    params.map((param) => param + ': string').join(';') +
+    '}'
+  );
 }
 const GENERATED_HEADER = `
 ///////////////////////////////////////////////////////////////////////////
@@ -105,5 +112,5 @@ const GENERATED_HEADER = `
 ///////////////////////////////////////////////////////////////////////////
 `;
 function s(text) {
-    return JSON.stringify(text);
+  return JSON.stringify(text);
 }

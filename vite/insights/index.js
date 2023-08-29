@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.qwikInsights = void 0;
 const fs_1 = require("fs");
 const promises_1 = require("fs/promises");
-const INSIGHTS_Q_MANIFEST_FILENAME = './dist/q-insights.json';
+const node_path_1 = require("node:path");
 const logWarn = (message) => {
     console.warn('\x1b[33m%s\x1b[0m', `\n\nQWIK WARN: ${message}\n`);
 };
@@ -25,13 +25,17 @@ async function qwikInsights(qwikInsightsOpts) {
                 catch (e) {
                     logWarn('fail to fetch manifest from Insights DB');
                 }
-                await (0, promises_1.writeFile)(INSIGHTS_Q_MANIFEST_FILENAME, JSON.stringify(qManifest));
+                console.log('QwiVite path 1', (0, node_path_1.join)(process.cwd(), 'dist', 'q-insights.json'));
+                await (0, promises_1.writeFile)((0, node_path_1.join)(process.cwd(), 'dist', 'q-insights.json'), JSON.stringify(qManifest));
+                console.log('QwiVite path 2', (0, node_path_1.join)(process.cwd(), 'dist', 'q-insights.json'));
+                const read = await (0, promises_1.readFile)((0, node_path_1.join)(process.cwd(), 'dist', 'q-insights.json'), 'utf-8');
+                console.log('QwiVite path 3', read);
             }
         },
         closeBundle: async () => {
-            const Q_MANIFEST_FILENAME = './dist/q-manifest.json';
-            if (isProd && (0, fs_1.existsSync)('./dist/q-manifest.json')) {
-                const qManifest = await (0, promises_1.readFile)(Q_MANIFEST_FILENAME, 'utf-8');
+            const path = (0, node_path_1.join)(process.cwd(), 'dist', 'q-manifest.json');
+            if (isProd && (0, fs_1.existsSync)(path)) {
+                const qManifest = await (0, promises_1.readFile)(path, 'utf-8');
                 try {
                     await fetch(`${baseUrl}/api/v1/${publicApiKey}/post/manifest`, {
                         method: 'post',
