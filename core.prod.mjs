@@ -1,6 +1,6 @@
 /**
  * @license
- * @builder.io/qwik 1.2.10-dev20230829215751
+ * @builder.io/qwik 1.2.10-dev20230829224656
  * Copyright Builder.io, Inc. All Rights Reserved.
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/BuilderIO/qwik/blob/main/LICENSE
@@ -1642,7 +1642,7 @@ const static_subtree = 2;
 
 const dangerouslySetInnerHTML = "dangerouslySetInnerHTML";
 
-const version = "1.2.10-dev20230829215751";
+const version = "1.2.10-dev20230829224656";
 
 const hashCode = (text, hash = 0) => {
     for (let i = 0; i < text.length; i++) {

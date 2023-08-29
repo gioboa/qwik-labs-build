@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/qwik/optimizer",
-  "version": "1.2.10-dev20230829215751",
+  "version": "1.2.10-dev20230829224656",
   "main": "../optimizer.mjs",
   "module": "../optimizer.mjs",
   "types": "../optimizer.d.ts",
