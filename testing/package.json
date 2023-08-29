@@ -1,6 +1,6 @@
 {
   "name": "@builder.io/qwik/testing",
-  "version": "1.2.10-dev20230829224656",
+  "version": "1.2.10-dev20230829231637",
   "main": "index.mjs",
   "types": "index.d.ts",
   "private": true,

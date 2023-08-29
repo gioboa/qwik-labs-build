@@ -1,6 +1,6 @@
 /**
  * @license
- * @builder.io/qwik/optimizer 1.2.10-dev20230829224656
+ * @builder.io/qwik/optimizer 1.2.10-dev20230829231637
  * Copyright Builder.io, Inc. All Rights Reserved.
  * Use of this source code is governed by an MIT-style license that can be
  * found in the LICENSE file at https://github.com/BuilderIO/qwik/blob/main/LICENSE
@@ -1199,7 +1199,7 @@ var QWIK_BINDING_MAP = {
 };
 
 var versions = {
-  qwik: "1.2.10-dev20230829224656"
+  qwik: "1.2.10-dev20230829231637"
 };
 
 async function getSystem() {
@@ -3160,18 +3160,12 @@ function qwikVite(qwikViteOpts = {}) {
         const fs = await sys.dynamicImport("node:fs");
         try {
           const path2 = sys.path.join(process.cwd(), "dist", "q-insights.json");
-          console.log("QwikVite path 1", path2);
           if (fs.existsSync(path2)) {
-            console.log("QwikVite path 2", path2);
             const entryStrategy = JSON.parse(await fs.promises.readFile(path2, "utf-8"));
-            console.log("QwikVite path 3", entryStrategy);
             entryStrategy && (qwikViteOpts.entryStrategy = entryStrategy);
             await fs.promises.unlink(path2);
-            console.log("QwikVite path 4", path2);
           }
-        } catch (e) {
-          console.log("QwiVite path error", path);
-        }
+        } catch (e) {}
       }
       "serve" === viteCommand ? qwikViteOpts.entryStrategy = {
         type: "hook"
